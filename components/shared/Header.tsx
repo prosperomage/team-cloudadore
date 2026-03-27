@@ -13,73 +13,65 @@ import {
 } from "react-icons/fa";
 
 const navLinks = [
-  {
-    name: "Home",
-    href: "/",
-  },
-  {
-    name: "About",
-    href: "/about",
-  },
-  {
-    name: "Resources",
-    href: "/resources",
-  },
-  {
-    name: "MerchStore",
-    href: "/Merch",
-  },
-  {
-    name: "Events",
-    href: "/events",
-  },
-  {
-    name: "Contact",
-    href: "/contact",
-  },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Resources", href: "/resources" },
+  { name: "MerchStore", href: "/merchstore" },
+  { name: "Events", href: "/events" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
- const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
   return (
-    <header className="w-full shadow-sm">
+    <header className="w-full sticky top-0 z-50 bg-white shadow-sm">
+      
       {/* Top Bar */}
-      <div className="bg-primary text-white text-sm py-2 px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+      <div className="hidden md:flex bg-(--color-primary-blue) text-white text-sm py-2 px-4 lg:px-10 justify-between items-center">
+        
         <div className="flex items-center gap-2">
-          <FaEnvelope />
-          <span className="text-xs sm:text-sm">info@cloudadore.com</span>
+          <FaEnvelope className="text-(--color-accent-orange)" />
+          <span className="text-xs md:text-sm">
+            info@cloudadore.com
+          </span>
         </div>
 
         <div className="flex gap-4 items-center">
-          <span className="text-xs sm:text-sm">Follow us:</span>
-          <FaFacebookF className="cursor-pointer hover:opacity-80 transition" />
-          <FaTwitter className="cursor-pointer hover:opacity-80 transition" />
-          <FaInstagram className="cursor-pointer hover:opacity-80 transition" />
+          <span className="hidden lg:block text-sm">
+            Follow us:
+          </span>
+
+          <FaFacebookF className="cursor-pointer hover:text-(--color-accent-orange) transition" />
+          <FaTwitter className="cursor-pointer hover:text-(--color-accent-orange) transition" />
+          <FaInstagram className="cursor-pointer hover:text-(--color-accent-orange) transition" />
         </div>
       </div>
 
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-4 sm:px-6 py-4 bg-white border-b border-light">
+      <nav className="flex justify-between items-center px-4 sm:px-6 md:px-8 lg:px-12 py-4 border-b border-(--color-border)">
+        
         {/* Logo */}
-        <h1 className="text-xl sm:text-2xl font-bold text-primary">
-          Cloudadore
-        </h1>
+        <Link href="/">
+          <h1 className="text-xl sm:text-2xl font-bold text-(--color-primary-blue)">
+            Cloud
+            <span className="text-(--color-accent-orange)">
+              Adore
+            </span>
+          </h1>
+        </Link>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex gap-8 font-medium">
+        <ul className="hidden lg:flex gap-6 xl:gap-8 font-medium">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className={`transition ${
+                className={`transition pb-1 text-sm xl:text-base ${
                   pathname === link.href
-                    ? 'text-primary border-b-2 border-primary pb-1'
-                    : 'text-muted hover:text-primary'
+                    ? "text-dark border-b-2 border-(--color-primary-blue)"
+                    : "text-(--color-text-light) hover:text-(--color-primary-blue)"
                 }`}
               >
                 {link.name}
@@ -88,41 +80,52 @@ export default function Header() {
           ))}
         </ul>
 
+        {/* Tablet Buttons */}
+        {/* <div className="hidden md:flex lg:hidden gap-2">
+          <button className="border border-(--color-accent-orange) text-(--color-accent-orange) px-3 py-2 text-sm rounded-lg hover:bg-(--color-accent-orange) hover:text-white transition">
+            Donate
+          </button>
+        </div> */}
+
         {/* Desktop Buttons */}
-        <div className="hidden md:flex gap-3">
-          <button className="border border-accent-orange text-accent-orange px-4 py-2 rounded-lg hover:bg-accent-orange hover:text-white transition">
+        <div className="hidden lg:flex gap-3">
+          <button className="border border-(--color-accent-orange) text-(--color-accent-orange) px-4 py-2 rounded-lg hover:bg-(--color-accent-orange) hover:text-white transition">
             Donate
           </button>
 
-          <button className="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition">
+          <button className="bg-(--color-primary-blue) text-white px-4 py-2 rounded-lg hover:bg-(--color-secondary-blue) transition">
             Join Community
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Button */}
         <button
-          className="md:hidden text-primary text-2xl"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle menu"
+          className="lg:hidden text-2xl text-(--color-primary-blue)"
+          onClick={() =>
+            setIsMobileMenuOpen(!isMobileMenuOpen)
+          }
         >
           {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile + Tablet Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-light">
-          <ul className="flex flex-col gap-0 font-medium">
+        <div className="lg:hidden bg-white border-b border-(--color-border)">
+          
+          <ul>
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={`block px-4 sm:px-6 py-3 transition border-l-4 ${
+                  onClick={() =>
+                    setIsMobileMenuOpen(false)
+                  }
+                  className={`block px-6 py-3 border-l-4 ${
                     pathname === link.href
-                      ? 'text-primary border-l-primary bg-gray-50'
-                      : 'text-muted hover:text-primary border-l-transparent hover:bg-gray-50'
+                      ? "border-(--color-accent-orange) bg-(--color-bg-light) text-(--color-primary-blue)"
+                      : "border-transparent text-(--color-text-light) hover:bg-(--color-bg-light)"
                   }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
                 </Link>
@@ -131,12 +134,12 @@ export default function Header() {
           </ul>
 
           {/* Mobile Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 p-4 sm:p-6 border-t border-light">
-            <button className="flex-1 border border-accent-orange text-accent-orange px-4 py-2 rounded-lg hover:bg-accent-orange hover:text-white transition">
+          <div className="flex flex-col sm:flex-row gap-3 p-6 border-t border-(--color-border)">
+            <button className="flex-1 border border-(--color-accent-orange) text-(--color-accent-orange) px-4 py-2 rounded-lg hover:bg-(--color-accent-orange) hover:text-white transition">
               Donate
             </button>
 
-            <button className="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition">
+            <button className="flex-1 bg-(--color-primary-blue) text-white px-4 py-2 rounded-lg hover:bg-(--color-secondary-blue) transition">
               Join Community
             </button>
           </div>
