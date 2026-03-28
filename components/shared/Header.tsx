@@ -47,7 +47,7 @@ export default function Header() {
       {/* Navbar */}
      <nav className="flex justify-between items-center px-6 md:px-12 py-4 border-b border-(--color-border) bg-white sticky top-0 z-50">
       
-      {/* 1. Logo: Removed 'w-full' so it only takes up the space it needs */}
+      
       <Link href="/" className="shrink-0">
         <Image
           src="/brandlogo.svg"

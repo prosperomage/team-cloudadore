@@ -14,7 +14,6 @@ export interface TestimonialData {
   avatarUrl?: string;
 }
 
-
 export interface TeamMember {
   id: string;
   name: string;
@@ -26,22 +25,25 @@ export interface MissionVision {
   title: string;
   description: string;
   icon: React.ReactNode;
-  variant: 'blue' | 'orange';
+  variant: "blue" | "orange";
 }
 
-
 export interface ResourceItem {
-  id: string;     
+  id: string;
   category: string;
   date: string;
   title: string;
   description: string;
   image: string;
-  href?: string;     
+  href?: string;
+  status?: "Open" | "Sold Out" | "Limited"; // Specifically for Events
 }
- 
+
 export interface ResourceGalleryProps {
   items: ResourceItem[];
   itemsPerPage?: number;
   title?: string;
+  allTabLabel: string; 
+  categoryMapping?: Record<string, string>;
+  
 }

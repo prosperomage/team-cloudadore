@@ -5,61 +5,89 @@ import { ResourceGalleryProps } from '@/types';
 
 export const ResourceGallery: React.FC<ResourceGalleryProps> = ({ 
   items, 
-  itemsPerPage = 6, 
-  title = "Resources" 
+  itemsPerPage = 4, 
+  title,
+  allTabLabel,
+  categoryMapping = {} 
 }) => {
-  const [activeTab, setActiveTab] = useState('All Resources');
+  // 1. State for both filtering and pagination
+  const [activeTab, setActiveTab] = useState(allTabLabel);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 1. Get unique categories
-  const categories = useMemo(() => 
-    ['All Resources', ...Array.from(new Set(items.map(i => i.category)))], 
+  // 2. Extract raw categories from data
+  const rawCategories = useMemo(() => 
+    Array.from(new Set(items.map(i => i.category))), 
     [items]
   );
 
-  // 2. Filter logic
+  // 3. Filter logic
   const filteredItems = useMemo(() => {
-    setCurrentPage(1); // Reset page when filtering
-    return activeTab === 'All Resources' 
-      ? items 
-      : items.filter(i => i.category === activeTab);
-  }, [items, activeTab]);
+    if (activeTab === allTabLabel) return items;
+    
+    return items.filter(item => {
+      const displayLabel = categoryMapping[item.category] || item.category;
+      return displayLabel === activeTab;
+    });
+  }, [items, activeTab, allTabLabel, categoryMapping]);
 
-  // 3. Pagination logic
+  // 4. Pagination math
   const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-  const currentItems = filteredItems.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  
+  const currentItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredItems.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredItems, currentPage, itemsPerPage]);
+
+  // 5. Helper to change tabs and reset page
+  const handleTabChange = (label: string) => {
+    setActiveTab(label);
+    setCurrentPage(1);
+  };
 
   return (
     <section className="py-20 px-6 bg-(--color-bg-light) min-h-screen">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-(--color-text-dark)">
-          {title}
-        </h2>
+        {title && (
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-(--color-text-dark)">
+            {title}
+          </h2>
+        )}
 
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border shadow-sm ${
-                activeTab === category
-                  ? "bg-(--color-primary-blue) text-white border-(--color-primary-blue) scale-105"
-                  : "bg-white text-(--color-text-light) border-(--color-border) hover:border-(--color-primary-blue) hover:text-(--color-primary-blue)"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+          <button
+            onClick={() => handleTabChange(allTabLabel)}
+            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all border ${
+              activeTab === allTabLabel
+                ? "bg-(--color-primary-blue) text-white border-(--color-primary-blue) shadow-md"
+                : "bg-white text-(--color-text-light) border-(--color-border) hover:text-(--color-primary-blue)"
+            }`}
+          >
+            {allTabLabel}
+          </button>
+
+          {rawCategories.map((rawCat) => {
+            const displayLabel = categoryMapping[rawCat] || rawCat;
+            return (
+              <button
+                key={rawCat}
+                onClick={() => handleTabChange(displayLabel)}
+                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all border ${
+                  activeTab === displayLabel
+                    ? "bg-(--color-primary-blue) text-white border-(--color-primary-blue) shadow-md"
+                    : "bg-white text-(--color-text-light) border-(--color-border) hover:text-(--color-primary-blue)"
+                }`}
+              >
+                {displayLabel}
+              </button>
+            );
+          })}
         </div>
 
         {/* Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {currentItems.map((item, index) => (
-            <ResourceCard key={`${item.title}-${index}`} item={item} />
+          {currentItems.map((item) => (
+            <ResourceCard key={item.id} item={item} />
           ))}
         </div>
 
@@ -69,7 +97,7 @@ export const ResourceGallery: React.FC<ResourceGalleryProps> = ({
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-6 py-2 rounded-xl border border-(--color-border) bg-white disabled:opacity-30 font-semibold"
+              className="px-6 py-2 rounded-xl border border-(--color-border) bg-white disabled:opacity-30 font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
             >
               Previous
             </button>
@@ -79,10 +107,10 @@ export const ResourceGallery: React.FC<ResourceGalleryProps> = ({
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`w-10 h-10 rounded-xl border text-sm font-bold transition-all ${
+                  className={`w-10 h-10 rounded-xl border text-sm font-bold transition-all cursor-pointer ${
                     currentPage === i + 1
                       ? "bg-(--color-text-dark) text-white border-(--color-text-dark)"
-                      : "bg-white text-(--color-text-light) border-(--color-border)"
+                      : "bg-white text-(--color-text-light) border-(--color-border) hover:border-(--color-text-dark)"
                   }`}
                 >
                   {i + 1}
@@ -93,7 +121,7 @@ export const ResourceGallery: React.FC<ResourceGalleryProps> = ({
             <button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="px-6 py-2 rounded-xl border border-(--color-border) bg-white disabled:opacity-30 font-semibold"
+              className="px-6 py-2 rounded-xl border border-(--color-border) bg-white disabled:opacity-30 font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
             >
               Next
             </button>

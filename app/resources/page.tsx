@@ -135,7 +135,7 @@ const page = () => {
     <div>
       <section
         className="relative h-87.5 flex flex-col bg-(--color-primary-blue) justify-center items-center text-center text-white bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/sample1.jpg')",  }}
+        style={{ backgroundImage: "url('/images/sample1.jpg')" }}
       >
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 px-4">
@@ -166,10 +166,20 @@ const page = () => {
       </section> */}
 
       {/* The Reusable Gallery */}
-      <ResourceGallery
+      {/* <ResourceGallery
         items={resources}
         itemsPerPage={6}
         title="Browse Resources"
+      /> */}
+
+      <ResourceGallery
+        items={resources}
+        allTabLabel="All Upcoming Events"
+        itemsPerPage={4}
+        categoryMapping={{
+          Workshop: "Hands-on Training",
+          Conference: "Grand Summits",
+        }}
       />
     </div>
   );
