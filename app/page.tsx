@@ -308,16 +308,16 @@ export default function Home() {
               Premium merch for innovators and dreamers.
             </p>
           </div>
-          <a
-            href="#"
+          <Link
             style={{
               color: "var(--color-primary-blue)",
               fontWeight: 600,
               textDecoration: "none",
             }}
+            href="/merchstore"
           >
             Visit Store →
-          </a>
+          </Link>
         </div>
 
         <div

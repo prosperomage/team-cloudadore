@@ -14,3 +14,34 @@ export interface TestimonialData {
   avatarUrl?: string;
 }
 
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  imageUrl: string;
+}
+
+export interface MissionVision {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  variant: 'blue' | 'orange';
+}
+
+
+export interface ResourceItem {
+  id: string;     
+  category: string;
+  date: string;
+  title: string;
+  description: string;
+  image: string;
+  href?: string;     
+}
+ 
+export interface ResourceGalleryProps {
+  items: ResourceItem[];
+  itemsPerPage?: number;
+  title?: string;
+}
