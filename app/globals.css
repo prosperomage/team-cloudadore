@@ -14,6 +14,19 @@
   --color-white: #ffffff;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-white);
+  color: var(--color-text-dark);
+  margin: 0;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+}
 
 
 /* Utility Classes (Tailwind v4 Safe) */

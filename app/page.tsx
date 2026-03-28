@@ -12,6 +12,52 @@ import Image from "next/image";
 import { FeatureCard } from "@/components/shared/FeatureCard";
 import { EventCard } from "@/components/shared/EventsCard";
 import Link from "next/link";
+import { MerchCard } from "@/components/shared/MerchCard";
+import { Product, TestimonialData } from "@/types";
+import { TestimonialCard } from "@/components/shared/TestimonialCard";
+
+interface TestimonialCardProps {
+  data: TestimonialData;
+}
+
+//partnerships
+const partners: string[] = [
+  "Slack",
+  "Amazon",
+  "Logitech",
+  "Google",
+  "Facebook",
+];
+
+// json data fro testimonials
+const testimonials: TestimonialData[] = [
+  {
+    id: 1,
+    author: "Omolara George",
+    role: "Senior Cloud Architect",
+    text: "CloudAdore Club transformed my career. The community support, expert resources, and networking opportunities helped me advance from a junior developer to a cloud architect in just two years.",
+  },
+  {
+    id: 2,
+    author: "Omolara George",
+    role: "Senior Cloud Architect",
+    text: "CloudAdore Club transformed my career. The community support, expert resources, and networking opportunities helped me advance from a junior developer to a cloud architect in just two years.",
+  },
+  {
+    id: 3,
+    author: "Omolara George",
+    role: "Senior Cloud Architect",
+    text: "CloudAdore Club transformed my career. The community support, expert resources, and networking opportunities helped me advance from a junior developer to a cloud architect in just two years.",
+  },
+];
+
+// json data fo the
+const products: Product[] = [
+  { id: "1", name: "CloudAdore T-Shirt", price: "₦19,999.00" },
+  { id: "2", name: "CloudAdore T-Shirt", price: "₦19,999.00" },
+  { id: "3", name: "CloudAdore T-Shirt", price: "₦19,999.00" },
+  { id: "4", name: "CloudAdore T-Shirt", price: "₦19,999.00" },
+];
 
 const Stat = ({
   icon,
@@ -237,6 +283,99 @@ export default function Home() {
               location="University of Ibadan"
               description="48-hour challenge where innovators build cloud solutions."
             />
+          </div>
+        </div>
+      </section>
+
+      {/* merch section */}
+
+      <section
+        style={{ maxWidth: "1200px", margin: "0 auto", padding: "4rem 1.5rem" }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            marginBottom: "2.5rem",
+          }}
+        >
+          <div>
+            <h2 style={{ fontSize: "2rem", margin: "0 0 0.5rem 0" }}>
+              Own the Cloud Look
+            </h2>
+            <p style={{ color: "var(--color-text-light)", margin: 0 }}>
+              Premium merch for innovators and dreamers.
+            </p>
+          </div>
+          <a
+            href="#"
+            style={{
+              color: "var(--color-primary-blue)",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Visit Store →
+          </a>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "2rem",
+          }}
+        >
+          {products.map((product) => (
+            <MerchCard key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+
+      {/* testimonial */}
+      <section className="max-w-7xl mx-auto px-6 py-20 bg-(--color-bg-light)">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-(--color-text-dark) mb-4">
+            What others say about our community
+          </h2>
+          <p className="max-w-2xl mx-auto text-(--color-text-light) text-sm md:text-base">
+            Our community provides resources and support for Christians in the
+            tech industry to grow both spiritually and professionally.
+          </p>
+        </div>
+
+        {/* Grid: 1 col on mobile, 3 cols on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((item) => (
+            <TestimonialCard key={item.id} data={item} />
+          ))}
+        </div>
+
+        {/* Pagination Dots (Matching Screenshot) */}
+        <div className="flex justify-center gap-2 mt-10">
+          <span className="h-2 w-2 rounded-full bg-(--color-primary-blue)" />
+          <span className="h-2 w-2 rounded-full bg-slate-300" />
+          <span className="h-2 w-2 rounded-full bg-slate-300" />
+        </div>
+      </section>
+
+      {/* companies we work with */}
+      <section className="w-full bg-(--color-bg-light) border-y border-(--color-border)  py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 lg:gap-24">
+            {partners.map((partner) => (
+              <div
+                key={partner}
+                className="flex items-center justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
+              >
+                {/* Replacing with a styled text-logo for the demo */}
+                <span className="text-xl text-blue-500 md:text-2xl font-bold tracking-tight  ">
+                  {partner.toLowerCase()}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
